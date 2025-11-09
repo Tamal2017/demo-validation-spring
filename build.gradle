@@ -1,0 +1,47 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version "4.0.0-RC2"
+    id 'io.spring.dependency-management' version "1.1.7"
+}
+
+group = "dev.tamal.example"
+version = "0.0.1-SNAPSHOT"
+description = "Demo project for Spring Boot validation"
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(25)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation "org.springframework.boot:spring-boot-starter-data-jpa"
+    implementation "org.springframework.boot:spring-boot-starter-web" // use standard web starter
+
+    // Lombok
+    compileOnly "org.projectlombok:lombok:${lombokVersion}"
+    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+    annotationProcessor "org.projectlombok:lombok-mapstruct-binding:${mapstructBindingVersion}"
+    testCompileOnly "org.projectlombok:lombok:${lombokVersion}"
+    testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+
+    // MapStruct
+    implementation "org.mapstruct:mapstruct:${mapstructVersion}"
+    annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
+
+    // H2
+    runtimeOnly "com.h2database:h2"
+
+    // Tests
+    testImplementation "org.springframework.boot:spring-boot-starter-data-jpa-test"
+    testImplementation "org.springframework.boot:spring-boot-starter-webmvc-test"
+    testRuntimeOnly "org.junit.platform:junit-platform-launcher"
+}
+
+tasks.named("test") {
+    useJUnitPlatform()
+}
