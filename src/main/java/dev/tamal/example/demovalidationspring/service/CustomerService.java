@@ -1,19 +1,19 @@
 package dev.tamal.example.demovalidationspring.service;
 
-import dev.tamal.example.demovalidationspring.entity.CustomerEntity;
+import dev.tamal.example.demovalidationspring.model.Customer;
 
 import java.util.List;
 
 public interface CustomerService {
-    CustomerEntity getCustomerById(Long id);
+    Customer getCustomerById(Long id);
 
-    List<CustomerEntity> getAllCustomer();
+    List<Customer> getAllCustomer();
 
-    CustomerEntity saveCustomer(CustomerEntity customerEntity);
+    Customer saveCustomer(Customer customer);
 
-    CustomerEntity updateCustomer(CustomerEntity customerEntity);
+    Customer updateCustomer(Customer customer);
 
-    void deleteCustomer(CustomerEntity customerEntity);
+    void deleteCustomer(Customer customer);
 
     void deleteCustomerById(Long id);
 }

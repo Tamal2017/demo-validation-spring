@@ -1,7 +1,8 @@
 package dev.tamal.example.demovalidationspring.service;
 
-import dev.tamal.example.demovalidationspring.entity.CustomerEntity;
 import dev.tamal.example.demovalidationspring.exception.CustomerException;
+import dev.tamal.example.demovalidationspring.mapper.CustomerMapper;
+import dev.tamal.example.demovalidationspring.model.Customer;
 import dev.tamal.example.demovalidationspring.repository.CustomerRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,35 +16,37 @@ import java.util.List;
 public class CustomerServiceImpl implements CustomerService {
 
     private final CustomerRepository customerRepository;
+    private final CustomerMapper mapper;
 
     @Override
-    public CustomerEntity getCustomerById(Long id) {
+    public Customer getCustomerById(Long id) {
         log.info("Find customer by id : {}", id);
-        return customerRepository.findById(id).orElseThrow(() -> new CustomerException("SI-404", "Customer not found with id %s".formatted(id), null));
+        var customerEntity = customerRepository.findById(id).orElseThrow(() -> new CustomerException("SI-404", "Customer not found with id %s".formatted(id), null));
+        return mapper.toDto(customerEntity);
     }
 
     @Override
-    public List<CustomerEntity> getAllCustomer() {
+    public List<Customer> getAllCustomer() {
         log.info("Get all customer!");
-        return customerRepository.findAll();
+        return mapper.toList(customerRepository.findAll());
     }
 
     @Override
-    public CustomerEntity saveCustomer(CustomerEntity customerEntity) {
-        log.info("Save customer : {}", customerEntity);
-        return customerRepository.save(customerEntity);
+    public Customer saveCustomer(Customer customer) {
+        log.info("Save customer : {}", customer);
+        return mapper.toDto(customerRepository.save(mapper.toEntity(customer)));
     }
 
     @Override
-    public CustomerEntity updateCustomer(CustomerEntity customerEntity) {
+    public Customer updateCustomer(Customer customerEntity) {
         log.info("Updating customer : {}", customerEntity);
-        return customerRepository.save(customerEntity);
+        return mapper.toDto(customerRepository.save(mapper.toEntity(customerEntity)));
     }
 
     @Override
-    public void deleteCustomer(CustomerEntity customerEntity) {
+    public void deleteCustomer(Customer customerEntity) {
         log.info("Deleting customer : {}", customerEntity);
-        customerRepository.delete(customerEntity);
+        customerRepository.delete(mapper.toEntity(customerEntity));
     }
 
     @Override
