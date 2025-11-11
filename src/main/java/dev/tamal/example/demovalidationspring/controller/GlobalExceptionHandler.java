@@ -6,6 +6,7 @@ import dev.tamal.example.demovalidationspring.model.CustomError;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -25,7 +26,7 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(CustomError.builder()
                 .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
                 .code("SI-500")
-                .message(ex.getMessage())
+                .message("Invalid argument exception")
                 .detail(extractDetails(ex))
                 .build(),
                 HttpStatus.INTERNAL_SERVER_ERROR
@@ -46,10 +47,12 @@ public class GlobalExceptionHandler {
     private String extractDetails(Exception ex) {
         var list = new ArrayList<String>();
         if (ex instanceof MethodArgumentNotValidException notValidException) {
-            notValidException.getBindingResult().getAllErrors().forEach(error ->
-                list.add(error.getDefaultMessage() + ": " + error.getObjectName())
+            notValidException.getBindingResult().getAllErrors().forEach(error -> {
+                        var fieldError = (FieldError) error;
+                        list.add(fieldError.getField() + " " + fieldError.getDefaultMessage());
+                    }
             );
         }
-       return String.join(";", list);
+        return String.join(";", list);
     }
 }
