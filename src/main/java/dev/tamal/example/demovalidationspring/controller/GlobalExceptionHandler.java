@@ -3,6 +3,7 @@ package dev.tamal.example.demovalidationspring.controller;
 
 import dev.tamal.example.demovalidationspring.exception.CustomerException;
 import dev.tamal.example.demovalidationspring.model.CustomError;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -21,23 +22,25 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<CustomError> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
+    public ResponseEntity<CustomError> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex, HttpServletRequest request) {
         return new ResponseEntity<>(CustomError.builder()
                 .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
                 .code("SI-500")
                 .message("Invalid argument exception")
                 .detail(extractDetails(ex))
+                .path(request.getRequestURI())
                 .build(),
                 HttpStatus.INTERNAL_SERVER_ERROR
         );
     }
 
     @ExceptionHandler(CustomerException.class)
-    public ResponseEntity<CustomError> handleCustomerException(CustomerException ex) {
+    public ResponseEntity<CustomError> handleCustomerException(CustomerException ex, HttpServletRequest request) {
         return new ResponseEntity<>(CustomError.builder()
                 .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
                 .code(ex.getCode())
                 .message(ex.getMessage())
+                .path(request.getRequestURI())
                 .build(),
                 HttpStatus.INTERNAL_SERVER_ERROR
         );

@@ -1,17 +1,14 @@
 package dev.tamal.example.demovalidationspring.model;
 
-import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Data;
-import lombok.experimental.FieldDefaults;
 
 @Data
 @Builder
-@FieldDefaults(level = AccessLevel.PRIVATE)
 public class CustomError {
-    int status;
-    String code;
-    String message;
-    String detail;
-    String path;
+    private int status;
+    private String code;
+    private String message;
+    private String detail;
+    private String path;
 }
