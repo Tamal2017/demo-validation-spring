@@ -1,0 +1,158 @@
+openapi: 3.0.3
+info:
+  title: Customer API
+  version: 1.0.0
+  description: API contract for CustomerController (create, list, get by id, delete)
+
+servers:
+  - url: http://localhost:8080
+    description: Local dev server
+
+tags:
+  - name: Customer
+    description: Operations on customers
+
+paths:
+  /api/customers/:
+    post:
+      tags:
+        - Customer
+      summary: Save a customer
+      operationId: saveCustomer
+      requestBody:
+        required: true
+        x-java-annotations:
+          - "@javax.validation.Valid"
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerInput'
+            example:
+              firstName: "Jane"
+              lastName: "Doe"
+              email: "jane.doe@example.com"
+              address: "123 Main St"
+              birthDate: "1990-05-15"
+      responses:
+        '200':
+          description: Saved customer
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+    get:
+      tags:
+        - Customer
+      summary: Get all customers
+      operationId: getAllCustomer
+      responses:
+        '200':
+          description: List of customers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Customer'
+
+  /api/customers/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: Customer identifier
+        schema:
+          type: integer
+          format: int64
+          minimum: 1
+    get:
+      tags:
+        - Customer
+      summary: Get a customer by id
+      operationId: getCustomerById
+      responses:
+        '200':
+          description: Customer found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+        '404':
+          description: Customer not found
+    delete:
+      tags:
+        - Customer
+      summary: Delete a customer by id
+      operationId: deleteCustomerById
+      responses:
+        '204':
+          description: Deleted successfully (no content)
+        '404':
+          description: Customer not found
+
+components:
+  schemas:
+    Customer:
+      type: object
+      required:
+        - firstName
+        - address
+      properties:
+        firstName:
+          type: string
+          minLength: 1
+          pattern: "^(?!\\s*$).+"
+          x-java-annotations:
+            - "@javax.validation.constraints.NotBlank"
+          example: "Jane"
+          description: "Must not be blank"
+        lastName:
+          type: string
+          example: "Doe"
+        email:
+          type: string
+          format: email
+          pattern: "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"
+          example: "jane.doe@example.com"
+          description: "Optional; if provided must match email pattern"
+        address:
+          type: string
+          minLength: 6
+          maxLength: 128
+          example: "123 Main St, Apt 4"
+          description: "must be between 6 and 128 characters!"
+        birthDate:
+          type: string
+          format: date
+          example: "1990-05-15"
+
+    CustomerInput:
+      type: object
+      required:
+        - firstName
+        - address
+      properties:
+        firstName:
+          type: string
+          minLength: 1
+          example: "Jane"
+          description: "Must not be blank"
+        lastName:
+          type: string
+          example: "Doe"
+        email:
+          type: string
+          format: email
+          pattern: "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"
+          example: "jane.doe@example.com"
+          description: "Optional; if provided must match email pattern"
+        address:
+          type: string
+          minLength: 6
+          maxLength: 128
+          example: "123 Main St, Apt 4"
+          description: "must be between 6 and 128 characters!"
+        birthDate:
+          type: string
+          format: date
+          example: "1990-05-15"

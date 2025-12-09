@@ -1,7 +1,7 @@
 package dev.tamal.example.demovalidationspring.mapper;
 
 import dev.tamal.example.demovalidationspring.entity.CustomerEntity;
-import dev.tamal.example.demovalidationspring.model.Customer;
+import dev.tamal.example.demovalidationspring.dto.Customer;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;

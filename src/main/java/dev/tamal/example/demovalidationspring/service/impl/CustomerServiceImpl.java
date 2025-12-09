@@ -2,7 +2,7 @@ package dev.tamal.example.demovalidationspring.service.impl;
 
 import dev.tamal.example.demovalidationspring.exception.CustomerException;
 import dev.tamal.example.demovalidationspring.mapper.CustomerMapper;
-import dev.tamal.example.demovalidationspring.model.Customer;
+import dev.tamal.example.demovalidationspring.dto.Customer;
 import dev.tamal.example.demovalidationspring.repository.CustomerRepository;
 import dev.tamal.example.demovalidationspring.service.CustomerService;
 import lombok.AllArgsConstructor;

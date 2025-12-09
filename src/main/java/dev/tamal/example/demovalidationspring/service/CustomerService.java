@@ -1,6 +1,6 @@
 package dev.tamal.example.demovalidationspring.service;
 
-import dev.tamal.example.demovalidationspring.model.Customer;
+import dev.tamal.example.demovalidationspring.dto.Customer;
 
 import java.util.List;
 

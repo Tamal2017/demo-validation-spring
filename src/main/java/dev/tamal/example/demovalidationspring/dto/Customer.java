@@ -1,4 +1,4 @@
-package dev.tamal.example.demovalidationspring.model;
+package dev.tamal.example.demovalidationspring.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
